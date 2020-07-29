@@ -120,10 +120,11 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     hass.data[DOMAIN][config_entry.entry_id][
         UNDO_UPDATE_LISTENER
     ] = config_entry.add_update_listener(_async_update_listener)
+
     return True
 
 
-async def async_unload_entry(hass, config_entry):
+async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     """Unload the Plugwise stick connection."""
     unload_ok = all(
         await asyncio.gather(
