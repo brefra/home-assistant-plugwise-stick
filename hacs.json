@@ -1,0 +1,6 @@
+{
+    "name": "Plugwise USB-Stick",
+    "domains": ["switch", "sensor"],
+    "homeassistant": "0.113.2",
+    "iot_class": ["Local Push"]
+  }
