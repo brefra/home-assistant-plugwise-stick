@@ -1,20 +1,28 @@
 """Support for Plugwise power sensors."""
 from . import PlugwiseNodeEntity
-from .const import AVAILABLE_SENSOR_ID, DOMAIN, SENSORS
+from .const import AVAILABLE_SENSOR_ID, CB_NEW_NODE, DOMAIN, SENSORS
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
     """Set up Plugwise sensor based on config_entry."""
     stick = hass.data[DOMAIN][entry.entry_id]["stick"]
-    nodes_data = hass.data[DOMAIN][entry.entry_id]["sensor"]
-    entities = []
-    for mac in nodes_data:
+
+    async def async_add_sensor(mac):
+        """Add plugwise sensor."""
         node = stick.node(mac)
         for sensor_type in node.get_sensors():
-            if sensor_type in SENSORS:
-                if sensor_type != AVAILABLE_SENSOR_ID:
-                    entities.append(PlugwiseSensor(node, mac, sensor_type))
-    async_add_entities(entities)
+            if sensor_type in SENSORS and sensor_type != AVAILABLE_SENSOR_ID:
+                async_add_entities([PlugwiseSensor(node, mac, sensor_type)])
+
+    for mac in hass.data[DOMAIN][entry.entry_id]["sensor"]:
+        hass.async_create_task(async_add_sensor(mac))
+
+    def discoved_sensor(mac):
+        """Add newly discovered sensor"""
+        hass.async_create_task(async_add_sensor(mac))
+
+    #Listen for discovered nodes
+    stick.subscribe_stick_callback(discoved_sensor, CB_NEW_NODE)
 
 
 class PlugwiseSensor(PlugwiseNodeEntity):
