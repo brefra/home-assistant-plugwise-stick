@@ -35,6 +35,7 @@ Sensor | Outbound RSSI | dBm | Disabled
 ## Installation
 
 Install this integration to Home Assistant using [HACS](https://hacs.xyz)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 
 ## Configuration
 
