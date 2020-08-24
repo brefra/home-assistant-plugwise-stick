@@ -1,5 +1,5 @@
 """Const for Plugwise USB-stick."""
-
+from homeassistant.components.binary_sensor import DEVICE_CLASS_MOTION
 from homeassistant.components.switch import DEVICE_CLASS_OUTLET
 from homeassistant.const import (
     DEVICE_CLASS_POWER,
@@ -119,6 +119,14 @@ SENSORS = {
         "name": "Outbound RSSI",
         "state": "get_out_RSSI",
         "unit": "dBm", 
+    },
+    "motion": {
+        "class": DEVICE_CLASS_MOTION,
+        "enabled_default": True,
+        "icon": None,
+        "name": "Motion",
+        "state": "get_motion",
+        "unit": None, 
     }
 }
 

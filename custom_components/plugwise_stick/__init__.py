@@ -27,7 +27,7 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 CB_TYPE_NEW_NODE = "NEW_NODE"
-PLUGWISE_STICK_PLATFORMS = ["switch", "sensor"]
+PLUGWISE_STICK_PLATFORMS = ["switch", "sensor", "binary_sensor"]
 
 
 async def async_setup(hass, config):
