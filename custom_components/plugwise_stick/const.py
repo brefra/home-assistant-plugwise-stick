@@ -21,6 +21,7 @@ CB_NEW_NODE = "NEW_NODE"
 AVAILABLE_SENSOR_ID = "available"
 CURRENT_POWER_SENSOR_ID = "power_1s"
 TODAY_ENERGY_SENSOR_ID = "power_con_today"
+MOTION_SENSOR_ID = "motion"
 
 # Sensor types
 SENSORS = {
@@ -120,7 +121,7 @@ SENSORS = {
         "state": "get_out_RSSI",
         "unit": "dBm", 
     },
-    "motion": {
+    MOTION_SENSOR_ID: {
         "class": DEVICE_CLASS_MOTION,
         "enabled_default": True,
         "icon": None,
@@ -142,3 +143,18 @@ SWITCHES = {
         "unit": "state",
     }
 }
+
+ATTR_BATTERY_SAVING_AWAKE_DURATION = "awake_duration"
+ATTR_BATTERY_SAVING_AWAKE_INTERVAL = "awake_interval"
+ATTR_BATTERY_SAVING_SLEEP_DURATION = "sleep_duration"
+
+ATTR_SCAN_DAYLIGHT_MODE = "day_light"
+ATTR_SCAN_SENSITIVITY_MODE = "sensitivity_mode"
+ATTR_SCAN_RESET_TIMER = "reset_timer"
+
+SCAN_SENSITIVITY_HIGH = "high"
+SCAN_SENSITIVITY_MEDIUM = "medium"
+SCAN_SENSITIVITY_OFF = "off"
+SCAN_SENSITIVITY_MODES = [SCAN_SENSITIVITY_HIGH, SCAN_SENSITIVITY_MEDIUM, SCAN_SENSITIVITY_OFF]
+
+SERVICE_CONFIGURE_SCAN = "configure_scan"

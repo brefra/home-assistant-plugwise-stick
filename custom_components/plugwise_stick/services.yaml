@@ -1,0 +1,36 @@
+configure_scan:
+  description: >
+    Configure the motion settings for a Plugwise Scan device 
+    The new configuratie will be send soon as the Scan devices is awake to receive configuration changes. For quick activation press the local button to awake the device.
+  fields:
+    entity_id:
+      description: Entity id of the Plugwise Scan motion sensor.
+      example:  binary_sensor.motion_AB123
+    sensitivity_mode:
+      description: Scan motion sensitivity mode (high/medium/off).
+      example: medium
+    reset_timer:
+      description: >
+        Number of minutes the Scan waits after no motion detected to set state back to off.
+        Valid range is 1 minute up to 240 minutes (4 hours)
+      example: 5
+    day_light:
+      description: Daylight override to only report motion when lightlevel is below calibrated level
+      example: False
+configure_sed:
+  description: >
+    Configure the battery saving settings for battery powered Plugwise devices
+    The new configuratie will be send soon as the Plugwise devices is awake to receive configuration changes. For quick activation press the local button to awake the device.
+  fields:
+    entity_id:
+      description: Entity id of the Plugwise device.
+      example:  binary_sensor.motion_AB123
+    awake_interval:
+      description: Interval in minutes the device will be awake
+      example: 5
+    awake_duration:
+      description: Duration in seconds the device will be awake to receive messages
+      example: 5
+    sleep_duration:
+      description: Duration in seconds the node keeps sleeping
+      example: 5
