@@ -42,8 +42,8 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     def discover_finished():
         """Create entities for all discovered nodes."""
         nodes = stick.nodes()
-        _LOGGER.debug(
-            "Successfully discovered %s out of %s registered nodes",
+        _LOGGER.info(
+            "Discovered %s out of %s registered nodes",
             str(len(nodes)),
             str(stick.registered_nodes()),
         )
@@ -56,6 +56,8 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
                 hass.config_entries.async_forward_entry_setup(config_entry, component)
             )
         stick.auto_update()
+        # Enable reception of join request and automatically accept new node join requests
+        stick.allow_join_requests(True, True)
 
     def shutdown(event):
         hass.async_add_executor_job(stick.disconnect)
