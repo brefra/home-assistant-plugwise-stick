@@ -15,6 +15,9 @@
           "usb_path": "[%key:common::config_flow::data::usb_path%]"
         }
       },
+      "abort": {
+        "already_configured_device": "[%key:common::config_flow::abort::already_configured_device"
+      },
       "manual_path": {
         "data": {
           "usb_path": "[%key:common::config_flow::data::usb_path%]"
