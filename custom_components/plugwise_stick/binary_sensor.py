@@ -8,18 +8,21 @@ from homeassistant.helpers import config_validation as cv, entity_platform
 
 from . import PlugwiseNodeEntity
 from .const import (
-    ATTR_BATTERY_SAVING_AWAKE_DURATION,
-    ATTR_BATTERY_SAVING_AWAKE_INTERVAL,
-    ATTR_BATTERY_SAVING_SLEEP_DURATION,
     ATTR_SCAN_DAYLIGHT_MODE,
     ATTR_SCAN_SENSITIVITY_MODE,
     ATTR_SCAN_RESET_TIMER,
+    ATTR_SED_STAY_ACTIVE,
+    ATTR_SED_SLEEP_FOR,
+    ATTR_SED_MAINTENANCE_INTERVAL,
+    ATTR_SED_CLOCK_SYNC,
+    ATTR_SED_CLOCK_INTERVAL,
     AVAILABLE_SENSOR_ID,
     CB_NEW_NODE,
     DOMAIN,
     MOTION_SENSOR_ID,
     SCAN_SENSITIVITY_MODES,
     SENSORS,
+    SERVICE_CONFIGURE_BATTERY,
     SERVICE_CONFIGURE_SCAN,
 )
 
@@ -54,6 +57,25 @@ async def async_setup_entry(hass, entry, async_add_entities):
                             vol.Required(ATTR_SCAN_DAYLIGHT_MODE): cv.boolean,
                         },
                         "_service_configure_scan",
+                    )
+                    platform.async_register_entity_service(
+                        SERVICE_CONFIGURE_BATTERY,
+                        {
+                            vol.Required(ATTR_SED_STAY_ACTIVE): vol.All(
+                                vol.Coerce(int), vol.Range(min=1, max=120)
+                            ),
+                            vol.Required(ATTR_SED_SLEEP_FOR): vol.All(
+                                vol.Coerce(int), vol.Range(min=10, max=60)
+                            ),
+                            vol.Required(ATTR_SED_MAINTENANCE_INTERVAL): vol.All(
+                                vol.Coerce(int), vol.Range(min=5, max=1440)
+                            ),
+                            vol.Required(ATTR_SED_CLOCK_SYNC): cv.boolean,
+                            vol.Required(ATTR_SED_CLOCK_INTERVAL): vol.All(
+                                vol.Coerce(int), vol.Range(min=60, max=10080)
+                            ),
+                        },
+                        "_service_configure_battery_savings",
                     )
 
     for mac in hass.data[DOMAIN][entry.entry_id]["binary_sensor"]:
@@ -109,11 +131,11 @@ class PlugwiseBinarySensor(PlugwiseNodeEntity, BinarySensorEntity):
 
     def _service_configure_scan(self, **kwargs):
         """Service call to configure motion sensor of Scan device."""
-        sensitivity_mode = kwargs.get(ATTR_BATTERY_SAVING_AWAKE_DURATION)
-        reset_timer = kwargs.get(ATTR_BATTERY_SAVING_AWAKE_INTERVAL)
-        daylight_mode = kwargs.get(ATTR_BATTERY_SAVING_SLEEP_DURATION)
+        sensitivity_mode = kwargs.get(ATTR_SCAN_SENSITIVITY_MODE)
+        reset_timer = kwargs.get(ATTR_SCAN_RESET_TIMER)
+        daylight_mode = kwargs.get(ATTR_SCAN_DAYLIGHT_MODE)
         _LOGGER.debug(
-            "Configure Scan device (%s): sensitivity='%s', reset timer='%s', daylight mode='%s'",
+            "Configure Scan device '%s': sensitivity='%s', reset timer='%s', daylight mode='%s'",
             self.name,
             sensitivity_mode,
             str(reset_timer),
@@ -121,16 +143,26 @@ class PlugwiseBinarySensor(PlugwiseNodeEntity, BinarySensorEntity):
         )
         self._node.Configure_scan(reset_timer, sensitivity_mode, daylight_mode)
 
-    def _service_configure_sed(self, **kwargs):
+    def _service_configure_battery_savings(self, **kwargs):
         """Configure battery powered (sed) device service call."""
-        awake_duration = kwargs.get(ATTR_SCAN_SENSITIVITY_MODE)
-        awake_interval = kwargs.get(ATTR_SCAN_RESET_TIMER)
-        sleep_duration = kwargs.get(ATTR_SCAN_DAYLIGHT_MODE)
+        stay_active = kwargs.get(ATTR_SED_STAY_ACTIVE)
+        sleep_for = kwargs.get(ATTR_SED_SLEEP_FOR)
+        maintenance_interval = kwargs.get(ATTR_SED_MAINTENANCE_INTERVAL)
+        clock_sync = kwargs.get(ATTR_SED_CLOCK_SYNC)
+        clock_interval = kwargs.get(ATTR_SED_CLOCK_INTERVAL)
         _LOGGER.debug(
-            "Configure SED device (%s): awake duration='%s', awake interval='%s', sleep duration='%s'",
-            self._name,
-            str(awake_duration),
-            str(awake_interval),
-            str(sleep_duration),
+            "Configure SED device '%s': stay active='%s', sleep for='%s', maintenance interval='%s', clock sync='%s', clock interval='%s'",
+            self.name,
+            str(stay_active),
+            str(sleep_for),
+            str(maintenance_interval),
+            str(clock_sync),
+            str(clock_interval),
         )
-        self._node.Configure_scan(awake_duration, sleep_duration, awake_interval)
+        self._node.Configure_SED(
+            stay_active,
+            maintenance_interval,
+            sleep_for,
+            clock_sync,
+            clock_interval,
+        )

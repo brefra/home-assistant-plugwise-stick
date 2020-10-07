@@ -1,3 +1,21 @@
+device_add:
+  description: Manually add a new plugwise device
+  fields:
+    mac:
+      description: The full 16 character MAC address of the plugwise device.
+      example: 0123456789ABCDEF
+device_remove:
+  description: Remove and unregister specified device (MAC) from plugwise network
+  fields:
+    mac:
+      description: The full 16 character MAC address of the plugwise device.
+      example: 0123456789ABCDEF
+device_features:
+  description: Request supported features of specified device (MAC) from plugwise network
+  fields:
+    mac:
+      description: The full 16 character MAC address of the plugwise device.
+      example: 0123456789ABCDEF
 configure_scan:
   description: >
     Configure the motion settings for a Plugwise Scan device 
@@ -17,20 +35,26 @@ configure_scan:
     day_light:
       description: Daylight override to only report motion when lightlevel is below calibrated level
       example: False
-configure_sed:
+configure_battery_savings:
   description: >
-    Configure the battery saving settings for battery powered Plugwise devices
-    The new configuratie will be send soon as the Plugwise devices is awake to receive configuration changes. For quick activation press the local button to awake the device.
+    Configure the battery saving settings for battery powered Plugwise devices.
+    The new configuratie will be sent soon as the Plugwise device notifies Home Assistant it is awake to receive configuration changes. For quick reception of the configuration press the local button to wake up the device manually.
   fields:
     entity_id:
-      description: Entity id of the Plugwise device.
+      description: Entity id of the battery powered Plugwise device.
       example:  binary_sensor.motion_AB123
-    awake_interval:
-      description: Interval in minutes the device will be awake
-      example: 5
-    awake_duration:
-      description: Duration in seconds the device will be awake to receive messages
-      example: 5
-    sleep_duration:
-      description: Duration in seconds the node keeps sleeping
-      example: 5
+    stay_active:
+      description: Duration in seconds the device will be awake. A high value will drain the battery
+      example: 10
+    sleep_for:
+      description: Duration in minutes the device will be in sleeping mode and not able to respond any command.
+      example: 60
+    maintenance_interval:
+      description: Interval in minutes the node will wake up and notify it is able to receive (maintenance) commands.
+      example: 1440
+    clock_sync:
+      description: Enable or disable the synchronisation of the internal clock.
+      example: False
+    clock_interval:
+      description: Interval the device will synchronize its internal clock. Only usefull if clock_sync is set to True.
+      example: 10080
