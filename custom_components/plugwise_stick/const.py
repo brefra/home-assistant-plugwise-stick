@@ -1,5 +1,5 @@
 """Const for Plugwise USB-stick."""
-
+from homeassistant.components.binary_sensor import DEVICE_CLASS_MOTION
 from homeassistant.components.switch import DEVICE_CLASS_OUTLET
 from homeassistant.const import (
     DEVICE_CLASS_POWER,
@@ -21,6 +21,7 @@ CB_NEW_NODE = "NEW_NODE"
 AVAILABLE_SENSOR_ID = "available"
 CURRENT_POWER_SENSOR_ID = "power_1s"
 TODAY_ENERGY_SENSOR_ID = "power_con_today"
+MOTION_SENSOR_ID = "motion"
 
 # Sensor types
 SENSORS = {
@@ -121,6 +122,16 @@ SENSORS = {
         "unit": "dBm", 
     }
 }
+BINARY_SENSORS = {
+    MOTION_SENSOR_ID: {
+        "class": DEVICE_CLASS_MOTION,
+        "enabled_default": True,
+        "icon": None,
+        "name": "Motion",
+        "state": "get_motion",
+        "unit": None, 
+    }
+}
 
 # Switch types
 SWITCHES = {
@@ -134,3 +145,26 @@ SWITCHES = {
         "unit": "state",
     }
 }
+
+ATTR_MAC_ADDRESS = "mac"
+
+ATTR_SCAN_DAYLIGHT_MODE = "day_light"
+ATTR_SCAN_SENSITIVITY_MODE = "sensitivity_mode"
+ATTR_SCAN_RESET_TIMER = "reset_timer"
+
+ATTR_SED_STAY_ACTIVE = "stay_active"
+ATTR_SED_SLEEP_FOR = "sleep_for"
+ATTR_SED_MAINTENANCE_INTERVAL = "maintenance_interval"
+ATTR_SED_CLOCK_SYNC = "clock_sync"
+ATTR_SED_CLOCK_INTERVAL = "clock_interval"
+
+SCAN_SENSITIVITY_HIGH = "high"
+SCAN_SENSITIVITY_MEDIUM = "medium"
+SCAN_SENSITIVITY_OFF = "off"
+SCAN_SENSITIVITY_MODES = [SCAN_SENSITIVITY_HIGH, SCAN_SENSITIVITY_MEDIUM, SCAN_SENSITIVITY_OFF]
+
+SERVICE_CONFIGURE_BATTERY = "configure_battery_savings"
+SERVICE_CONFIGURE_SCAN = "configure_scan"
+SERVICE_DEVICE_ADD = "device_add"
+SERVICE_DEVICE_REMOVE = "device_remove"
+SERVICE_DEVICE_FEATURES = "device_features"
