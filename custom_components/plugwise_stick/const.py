@@ -120,7 +120,9 @@ SENSORS = {
         "name": "Outbound RSSI",
         "state": "get_out_RSSI",
         "unit": "dBm", 
-    },
+    }
+}
+BINARY_SENSORS = {
     MOTION_SENSOR_ID: {
         "class": DEVICE_CLASS_MOTION,
         "enabled_default": True,

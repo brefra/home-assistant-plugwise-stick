@@ -21,7 +21,7 @@ from .const import (
     DOMAIN,
     MOTION_SENSOR_ID,
     SCAN_SENSITIVITY_MODES,
-    SENSORS,
+    BINARY_SENSORS,
     SERVICE_CONFIGURE_BATTERY,
     SERVICE_CONFIGURE_SCAN,
 )
@@ -40,7 +40,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
         node = stick.node(mac)
         for sensor_type in node.get_sensors():
-            if sensor_type in SENSORS and sensor_type != AVAILABLE_SENSOR_ID:
+            if sensor_type in BINARY_SENSORS:
                 async_add_entities([PlugwiseBinarySensor(node, mac, sensor_type)])
                 _LOGGER.debug("Added %s as binary_sensors for %s", mac)
 
@@ -96,7 +96,7 @@ class PlugwiseBinarySensor(PlugwiseNodeEntity, BinarySensorEntity):
         """Initialize a Node entity."""
         super().__init__(node, mac)
         self.sensor_id = sensor_id
-        self.sensor_type = SENSORS[sensor_id]
+        self.sensor_type = BINARY_SENSORS[sensor_id]
         self.node_callbacks = (AVAILABLE_SENSOR_ID, sensor_id)
 
     @property
