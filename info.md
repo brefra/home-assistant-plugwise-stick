@@ -1,4 +1,12 @@
-# Plugwise USB-stick Home Assistant Integration
+# DEPRECATED - Plugwise USB-stick Home Assistant Integration - DEPRECATED
+
+_This specific custom_component is going to be deprecated soon !_
+You can continue to use this installation but it will not been maintained/updated.
+
+I've joined the plugwise team to have the legacy plugwise USB-stick be incorporated into the existing native Plugwise integration at Home Assistant. This is currently in development but not available yet.
+In the meanwhile you can use the [plugwise-beta](https://github.com/plugwise/plugwise-beta) version of the Plugwise integration instead by adding the repository manually to HACS.
+
+## Plugwise USB-stick Home Assistant Integration
 
  This is a Home Assistant integration (custom component) for **legacy** Plugwise Circle+, Circle and Stealth devices.
 
